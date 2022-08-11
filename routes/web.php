@@ -1,5 +1,8 @@
 <?php
 
+use App\Jobs\SendBirthdayWishJob;
+use App\Models\Customer;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/send-mail', function () {
+
+    // $customer = Customer::inRandomOrder()->first();
+
+    // $customer = Customer::findorfail(5);
+    // SendBirthdayWishJob::dispatch($customer)->delay(now()->addSeconds(2));
+    // echo "Mail Sent";
 });

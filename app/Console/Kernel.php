@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\SendBirthdayWishJob;
+use App\Models\Customer;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -16,6 +18,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $customer = Customer::inRandomOrder()->first();
+        $schedule->job(new SendBirthdayWishJob($customer))->everyMinute();
+        $schedule->command("queue:work --stop-when-empty")->everyMinute();
     }
 
     /**

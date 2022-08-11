@@ -1,0 +1,65 @@
+1. TO SEND SCHEDULED EMAIL TO RANDOM USER, IT IS NOT NECESSARY TO ADD CODE IN WEB.PHP ROUTE.
+2. TO SEND SCHEDULED EMAIL TO RANDOM USER USING MAILTRAP FIRST OF ALL WE NEED TO DO SOME MODIFICATION IN .ENV FILE
+
+WE SHOULD HAVE A DATABASE HAVING ANY TABLE HAVING COLUMN NAME email in it.
+
+--------------------------------------------
+APP_NAME="SENDER'S NAME"
+-------------------------------------------
+DB_DATABASE=Email_Job_Operation_DB
+DB_USERNAME=root
+DB_PASSWORD=PASSWORD
+-------------------------------------------
+QUEUE_CONNECTION=database
+-------------------------------------------
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=1234sfhakf1212
+MAIL_PASSWORD=1234sakkasjsla3
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="any_email_id"
+MAIL_FROM_NAME="${APP_NAME}"
+-------------------------------------------
+
+NOW we need to make a mail and view....we use laravel's default markdown by executing the command in terminal:
+
+==> php artisan make:mail "Mail_php_file_name" --markdown="View_folder_name"."view_blade_php_file_name"
+
+The above command will create a view file inside Resources/views/View_folder_name/view_blade_php_file_name
+and a phpmail file inside App\Mail\Mail_php_file_name.
+
+Now after required lines of code for the operation, run the following command in terminal :
+
+==> php artisan make:model "Model_name"
+
+The above command should have Model name same as table name in Singular term and having first letter in Uppercase.
+the execution of above command creates a model Model_name in App\Models. (at present no need to do here anything.)
+
+Now to Create Job we need to create a queue migration of name jobs, and for that run the command :
+
+==> php arisan queue:table
+
+it will create a jobs table in the database/migrations/21437178_create_jobs_table.php
+
+Now to migrate it run the command :
+
+==> php artisan migrate
+
+The above command will create jobs table in the database.
+
+Now we need to create Job for our operation, and to do so, first we need to run below command:
+
+==> php artisan make:job "job_name"
+
+The execution of above command will result creation of job_name file in App/Jobs folder.
+
+Now after writing code in Jobs...we need to open app/Console/Kernel.php file
+
+Under Schedule function we can write our Job scheduling and command Scheduling code for sending email.
+
+After writing Just Run the below command to make it executable :
+
+==> php artisan schedule:work
+
+This will run the email sending task as per schedule.
